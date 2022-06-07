@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FreeWalkingState : StateWithFinish
+public class FreeWalkingState : State
 {
     [SerializeField] private Transform _walkingTransform;
     [SerializeField] private WalkableArea _walkableArea;
@@ -14,8 +14,16 @@ public class FreeWalkingState : StateWithFinish
 
     public override void Enter()
     {
+        base.Enter();
         CreateNewPathPoints();
         StartMovement();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _mainTween.Pause();
+        _mainTween.Kill();
     }
 
     private void CreateNewPathPoints()
@@ -24,7 +32,11 @@ public class FreeWalkingState : StateWithFinish
         _pathPoints.Clear();
 
         for (int i = 0; i < pointsCount; i++)
-            _pathPoints.Add(_walkableArea.GetRandomPointOnMesh());
+        {
+            var newPoint = _walkableArea.GetRandomPointInArea();
+            newPoint.y = _walkingTransform.position.y;
+            _pathPoints.Add(newPoint);
+        }
     }
 
     private void StartMovement()
@@ -33,7 +45,7 @@ public class FreeWalkingState : StateWithFinish
         _mainTween = _walkingTransform.DOPath(_pathPoints.ToArray(), duration, PathType.CatmullRom, PathMode.Full3D, 10, Color.red).SetOptions(true).SetLookAt(0.001f);
         _mainTween.SetEase(Ease.Linear);
         _mainTween.SetAutoKill(false);
-        _mainTween.onComplete += () => OnFinished?.Invoke();
+        _mainTween.onComplete += () => OnExit?.Invoke();
         _mainTween.Play();
     }
 
@@ -48,8 +60,8 @@ public class FreeWalkingState : StateWithFinish
         return distance;
     }
 
-    public override void Exit()
+    private void Update()
     {
-        _mainTween.Kill();
+        _walkableArea.HasPointInArea(transform.position);
     }
 }

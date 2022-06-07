@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class CameraFollower : MonoBehaviour
+public sealed class CameraFollower : MonoBehaviour, IService
 {
     [Header("Common Settings")]
     [SerializeField][Tooltip("ICameraPursued")]
