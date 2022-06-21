@@ -910,7 +910,7 @@ namespace ECM.Controllers
             animator = GetComponentInChildren<Animator>();
 
             rootMotionController = GetComponentInChildren<RootMotionController>();
-        }        
+        }
 
         public virtual void FixedUpdate()
         {

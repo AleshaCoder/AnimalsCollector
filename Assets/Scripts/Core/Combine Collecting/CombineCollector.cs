@@ -9,6 +9,7 @@ public class CombineCollector : MonoBehaviour
     [SerializeField] private Transform _enterCombinePoint;
     [SerializeField] private Transform _exitCombinePoint;
     [SerializeField] private PlacesGroup _placesGroup;
+    [SerializeField] private GameObject _cellPrefab;
 
     public Action<IPickable> OnPick;
 
@@ -47,11 +48,18 @@ public class CombineCollector : MonoBehaviour
     {
         float duration = 0.7f;
 
+        var prefab = Instantiate(_cellPrefab, pickableTransform);
+        prefab.transform.localScale = new Vector3(100, 100, 6);
+        prefab.transform.localPosition = new Vector3(0, 0.2f, 0);
+        prefab.transform.localEulerAngles = new Vector3(90, 0, 0);
         pickableTransform.parent = place.transform;
+        pickableTransform.localEulerAngles = Vector3.zero;
+        pickableTransform.localScale = new Vector3(0.04f, 0.2f, 0.04f);
+        //pickableTransform.localPosition = Vector3.zero;
         var anim = pickableTransform.DOLocalJump(Vector3.zero, 2, 1, duration);
         anim.Play();
         await anim.AsyncWaitForCompletion();
-        pickableTransform.localEulerAngles = Vector3.zero;
+        
 
     }
 

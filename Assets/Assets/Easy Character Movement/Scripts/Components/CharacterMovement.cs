@@ -788,7 +788,7 @@ namespace ECM.Components
 
             if (direction.sqrMagnitude < 0.0001f)
                 return;
-             
+            
             var targetRotation = Quaternion.LookRotation(direction, transform.up);
             var newRotation = Quaternion.Slerp(cachedRigidbody.rotation, targetRotation,
                 angularSpeed * Mathf.Deg2Rad * Time.deltaTime);

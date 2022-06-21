@@ -11,6 +11,5 @@ public class GrabUpgrade : IUpgradable
     {
         _level++;
         _upgradableCollector.SetUpgrade(Level);
-        Debug.Log("GrabUpgrade");
     }
 }

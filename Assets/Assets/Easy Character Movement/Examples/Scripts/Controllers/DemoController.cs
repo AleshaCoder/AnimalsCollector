@@ -75,7 +75,7 @@ namespace ECM.Examples
                     return;
 
                 mainCamera.gameObject.SetActive(true);
-                mainCamera.TargetTransform = currentController.transform;
+                mainCamera.targetTransform = currentController.transform;
             }
         }
 

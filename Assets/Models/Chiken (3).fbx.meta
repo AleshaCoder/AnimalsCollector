@@ -18,7 +18,12 @@ ModelImporter:
   - first:
       74: 7705805807172298677
     second: Armature|Cylinder.001Action
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 54655c509b9ddcc42961ab683e22ed64, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -103,7 +108,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.01
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

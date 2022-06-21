@@ -3,6 +3,18 @@ using UnityEngine;
 
 public class UpgradesValidator : MonoBehaviour
 {
+    private class UpgradeData
+    {
+        public IUpgradable Upgrade;
+        public UpgradeView UpgradeView;
+
+        public UpgradeData(IUpgradable upgrade, UpgradeView upgradeView)
+        {
+            Upgrade = upgrade;
+            UpgradeView = upgradeView;
+        }
+    }
+
     [SerializeField] private SpeedUpgrade _speedUpgrade;
     [SerializeField] private CapacityUpgrade _capacityUpgrade;
     [SerializeField] private GrabUpgrade _grabUpgrade;
@@ -14,55 +26,32 @@ public class UpgradesValidator : MonoBehaviour
     [SerializeField] private List<int> _upgradesPrices;
 
     private Economy _economy;
+    private List<UpgradeData> _upgradeDatas;
 
-    public void UpgradeSpeed()
+    private void InitAll()
     {
-        if (_economy.TrySpendGold(_upgradesPrices[_speedUpgrade.Level]))
-            _speedUpgrade.Upgrade();
-        _speedUpgradeView.RefreshLevelAsResult(_speedUpgrade.GetResult(_speedUpgrade.Level), _speedUpgrade.GetResult(_speedUpgrade.Level + 2));
-        _speedUpgradeView.RefreshPrice(_upgradesPrices[_speedUpgrade.Level]);
+        foreach (var item in _upgradeDatas)
+        {
+            Upgrade(item);
+            item.UpgradeView.OnClick = () => Upgrade(item);
+        }
     }
 
-    public void UpgradeCapacity()
+    private void Upgrade(UpgradeData data)
     {
-        if (_economy.TrySpendGold(_upgradesPrices[_capacityUpgrade.Level]))
-            _capacityUpgrade.Upgrade();
-        _capacityUpgradeView.RefreshLevelAsResult(_capacityUpgrade.GetResult(_capacityUpgrade.Level), _capacityUpgrade.GetResult(_capacityUpgrade.Level + 2));
-        _capacityUpgradeView.RefreshPrice(_upgradesPrices[_capacityUpgrade.Level]);
-    }
-
-    public void UpgradeGrab()
-    {
-        if (_economy.TrySpendGold(_upgradesPrices[_grabUpgrade.Level]))
-            _grabUpgrade.Upgrade();
-        _grabUpgradeView.RefreshLevelAsLevel(_grabUpgrade.Level);
-        _grabUpgradeView.RefreshPrice(_upgradesPrices[_grabUpgrade.Level - 1]);
+        if (_economy.TrySpendGold(_upgradesPrices[data.Upgrade.Level]))
+            data.Upgrade.Upgrade();
+        data.UpgradeView.RefreshLevelAsLevel(_speedUpgrade.Level);
+        data.UpgradeView.RefreshPrice(_upgradesPrices[_speedUpgrade.Level]);
     }
 
     private void Start()
     {
         _economy = Services.Container.Single<Economy>();
-        _speedUpgradeView.OnClick += UpgradeSpeed;
-        _capacityUpgradeView.OnClick += UpgradeCapacity;
-        _grabUpgradeView.OnClick += UpgradeGrab;
-        UpgradeSpeed();
-        UpgradeCapacity();
-        UpgradeGrab();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            UpgradeSpeed();
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            UpgradeCapacity();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            UpgradeGrab();
-        }
+        _upgradeDatas = new List<UpgradeData>();
+        _upgradeDatas.Add(new UpgradeData(_speedUpgrade, _speedUpgradeView));
+        _upgradeDatas.Add(new UpgradeData(_capacityUpgrade, _capacityUpgradeView));
+        _upgradeDatas.Add(new UpgradeData(_grabUpgrade, _grabUpgradeView));
+        InitAll();
     }
 }

@@ -371,8 +371,8 @@ GameObject:
   - component: {fileID: 1168975168}
   - component: {fileID: 1168975173}
   - component: {fileID: 6384741632726624995}
-  - component: {fileID: 1168975174}
   - component: {fileID: 1168975171}
+  - component: {fileID: 80217179}
   m_Layer: 0
   m_Name: Chiken (3)
   m_TagString: Untagged
@@ -389,7 +389,7 @@ Transform:
   m_GameObject: {fileID: 2884071789004535887}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -28.974632, y: 40.842056, z: 24.66066}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6916770349959656043}
@@ -440,11 +440,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hero: {fileID: 0}
-  _detectionDistance: 30
-  _lossDistance: 50
+  _detectionDistance: 20
+  _lossDistance: 40
   _updateTime: 5
   _active: 0
-  _distanceToHero: 142.55432
+  _distanceToHero: 141.25328
 --- !u!114 &1168975178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +507,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &1168975174
+--- !u!65 &1168975171
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2884071789004535887}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &80217179
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -523,19 +536,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 68
   m_CollisionDetection: 0
---- !u!65 &1168975171
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2884071789004535887}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3477307796785232879
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,7 +929,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6663091341524984328}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -941,7 +941,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: ab520805668ad2d4fb8aab1c45a66f0d, type: 3}
+  - {fileID: 2100000, guid: 54655c509b9ddcc42961ab683e22ed64, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

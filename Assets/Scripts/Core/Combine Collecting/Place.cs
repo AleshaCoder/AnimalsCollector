@@ -4,6 +4,8 @@ public class Place : MonoBehaviour
 { 
     [SerializeField] private bool _free = true;
 
+    [Header("Editor")] public bool DrawCube = true;
+
     public bool IsFree => _free;
 
     public void Take()
@@ -28,6 +30,8 @@ public class Place : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (DrawCube == false)
+            return;
         Gizmos.color = Color.magenta;
         Gizmos.DrawCube(transform.position, transform.localScale);
     }

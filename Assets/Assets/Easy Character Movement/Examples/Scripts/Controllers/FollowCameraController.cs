@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ECM.Examples
 {
     public sealed class FollowCameraController : MonoBehaviour
     {
+        #region PUBLIC FIELDS
+
         [SerializeField]
         private Transform _targetTransform;
 
@@ -14,79 +15,53 @@ namespace ECM.Examples
         [SerializeField]
         private float _followSpeed = 3.0f;
 
-        [SerializeField]
-        private float _cameraXRotation = 70;
+        #endregion
 
-        [SerializeField]
-        private bool _followX, _followY, _followZ;
+        #region PROPERTIES
 
-        private IEnumerator _enumerator;
-
-        public Transform TargetTransform
+        public Transform targetTransform
         {
             get { return _targetTransform; }
             set { _targetTransform = value; }
         }
 
-        public Vector3 CameraAngle
-        {
-            get { return new Vector3(_cameraXRotation, 0, 0); }
-        }
-
-        public float DistanceToTarget
+        public float distanceToTarget
         {
             get { return _distanceToTarget; }
             set { _distanceToTarget = Mathf.Max(0.0f, value); }
         }
 
-        public float FollowSpeed
+        public float followSpeed
         {
             get { return _followSpeed; }
             set { _followSpeed = Mathf.Max(0.0f, value); }
         }
 
-        private Vector3 _cameraRelativePosition
+        private Vector3 cameraRelativePosition
         {
-            get { return TargetTransform.position - transform.forward * DistanceToTarget; }
+            get { return targetTransform.position - transform.forward * distanceToTarget; }
         }
 
-        public void ChangeRotation(float x)
-        {
-            if (_enumerator != null)
-                StopCoroutine(_enumerator);
-            _enumerator = ChangeRotationIE(x);
-            StartCoroutine(_enumerator);
-        }
-        public IEnumerator ChangeRotationIE(float x)
-        {
-            float delta = x - transform.localEulerAngles.x;
-            var endTime = new WaitForEndOfFrame();
-            while (Mathf.Abs(transform.localEulerAngles.x - x) > Mathf.Abs(0.5f))
-            {
-                _cameraXRotation += delta * Time.deltaTime;
-                yield return endTime;
-            }
-            _cameraXRotation = x;
-        }
+        #endregion
+
+        #region MONOBEHAVIOUR
 
         public void OnValidate()
         {
-            DistanceToTarget = _distanceToTarget;
-            FollowSpeed = _followSpeed;
+            distanceToTarget = _distanceToTarget;
+            followSpeed = _followSpeed;
         }
 
         public void Awake()
         {
-            transform.position = _cameraRelativePosition;
+            transform.position = cameraRelativePosition;
         }
 
         public void LateUpdate()
         {
-            float x = (_followX == true) ? _cameraRelativePosition.x : transform.position.x;
-            float y = (_followY == true) ? _cameraRelativePosition.y : transform.position.y;
-            float z = (_followZ == true) ? _cameraRelativePosition.z : transform.position.z;
-            transform.position = Vector3.Lerp(transform.position, new Vector3(x,y,z), FollowSpeed * Time.deltaTime);
-            transform.localEulerAngles = CameraAngle;
+            transform.position = Vector3.Lerp(transform.position, cameraRelativePosition, followSpeed * Time.deltaTime);
         }
+
+        #endregion
     }
 }

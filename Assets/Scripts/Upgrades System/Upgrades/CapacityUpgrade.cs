@@ -18,6 +18,5 @@ public class CapacityUpgrade : IUpgradable
     {
         _level++;
         _placesGroup.FreePlaceCount = _upgradeData.GetResult(_level);
-        Debug.Log("CapacityUpgrade");
     }
 }

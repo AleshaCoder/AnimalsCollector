@@ -18,6 +18,5 @@ public class SpeedUpgrade : IUpgradable
     {
         _level++;
         _characterController.speed = _upgradeData.GetResult(_level);
-        Debug.Log("SpeedUpgrade");
     }
 }

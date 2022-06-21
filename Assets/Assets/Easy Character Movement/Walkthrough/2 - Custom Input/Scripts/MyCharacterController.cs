@@ -1,5 +1,8 @@
 ﻿using ECM.Controllers;
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
+using DG.Tweening;
 
 public interface ICameraPursued
 {
@@ -24,6 +27,10 @@ namespace ECM.Walkthrough.CustomInput
         [SerializeField] private Transform _transformForFollowingWhenMove;
         [SerializeField] private Joystick _joystick;
 
+        private bool _rotationCompleted;
+        private bool _parking;
+        public bool Parking => _parking;
+
         public Transform TransformForFollowing
         {
             get
@@ -35,21 +42,31 @@ namespace ECM.Walkthrough.CustomInput
             }
         }
 
-        private bool CheckRotation()
+        public async Task Park(Vector3 position, Vector3 eulerAngles)
+        {
+            _parking = true;
+            var animMove = movement.transform.DOMove(new Vector3(position.x, movement.transform.position.y, position.z), 0.2f);
+            var animRotation = movement.transform.DORotate(new Vector3(0, -90, 0), 0.5f, RotateMode.Fast);
+            animMove.Play();
+            await animMove.AsyncWaitForCompletion();
+            animRotation.Play();
+            await animRotation.AsyncWaitForCompletion();
+            _parking = false;
+        }
+
+        private void Rotate()
         {
             if (moveDirection == Vector3.zero)
-                return false;
+                return;
             var targetRotation = Quaternion.LookRotation(moveDirection, transform.up);
             var angle = Mathf.Abs(Quaternion.Angle(targetRotation, movement.rotation));
-            if (angle < _maxAngleForMovement)
-                return true;
-            else
-                return false;
+            _rotationCompleted = angle < _maxAngleForMovement;
         }
 
         protected override void Move()
         {
-            if (CheckRotation() == false)
+            Rotate();
+            if (_rotationCompleted == false)
                 moveDirection = Vector3.zero;
             base.Move();
         }
@@ -58,6 +75,14 @@ namespace ECM.Walkthrough.CustomInput
         {
             if (Input.GetKeyDown(KeyCode.P))
                 pause = !pause;
+
+            if (pause)
+            {
+                return;
+            }
+
+            if (Parking)
+                return;
 
             moveDirection = new Vector3
             {

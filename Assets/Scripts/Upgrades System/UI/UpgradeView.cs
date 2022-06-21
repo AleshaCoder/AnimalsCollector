@@ -8,6 +8,7 @@ using System;
 public class UpgradeView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _price, _level;
+    [SerializeField] private LevelsIconsGroup _levelsIconsGroup;
     [SerializeField] private Button _upButton;
 
     public Action OnClick;
@@ -19,21 +20,18 @@ public class UpgradeView : MonoBehaviour
 
     public void RefreshLevelAsLevel(int level)
     {
-        _level.text = level.ToString();
-    }
-
-    public void RefreshLevelAsResult(int result, int nextResult)
-    {
-        _level.text = $"{result} -> {nextResult}";
+        _levelsIconsGroup.SetLevel(level);
+        if (_level != null)
+            _level.text = level.ToString();
     }
 
     private void OnEnable()
     {
-        _upButton.onClick.AddListener(() => OnClick?.Invoke());
+        _upButton.onClick.AddListener(OnClick.Invoke);
     }
 
     private void OnDisable()
     {
-        _upButton.onClick.RemoveListener(() => OnClick?.Invoke());
+        _upButton.onClick.RemoveListener(OnClick.Invoke);
     }
 }

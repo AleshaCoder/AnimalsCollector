@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,6 +28,9 @@ public class PlacesGroup : MonoBehaviour
 
     [Header("Editor")]
     [SerializeField] private int _maxCount;
+    [SerializeField] private bool _debugCubes = true;
+
+    public int TakenPlacesCount => GetTakenPlacesCount();
 
     public int FreePlaceCount
     {
@@ -40,8 +44,11 @@ public class PlacesGroup : MonoBehaviour
                 _freePlaceCount = _places.Count;
             else
                 _freePlaceCount = value;
+            OnFreePlacesCountChanged?.Invoke();
         }
     }
+
+    public event Action OnFreePlacesCountChanged;
 
     public bool TryTakeFreePlace(out Place animalPlace)
     {
@@ -57,6 +64,7 @@ public class PlacesGroup : MonoBehaviour
             {
                 animalPlace = place;
                 animalPlace.Take();
+                OnFreePlacesCountChanged?.Invoke();
                 return true;
             }
         }
@@ -72,6 +80,7 @@ public class PlacesGroup : MonoBehaviour
                 continue;
             FreePlace(place);
         }
+        OnFreePlacesCountChanged?.Invoke();
     }
 
     public void FreePlace()
@@ -89,6 +98,7 @@ public class PlacesGroup : MonoBehaviour
     public void FreePlace(Place place)
     {
         place.Free();
+        OnFreePlacesCountChanged?.Invoke();
     }
 
     private bool HasFreePlaces()
@@ -99,7 +109,7 @@ public class PlacesGroup : MonoBehaviour
         return false;
     }
 
-    private int GetTakenPlacesCount()
+    public int GetTakenPlacesCount()
     {
         int count = 0;
         foreach (var item in _places)
@@ -110,9 +120,9 @@ public class PlacesGroup : MonoBehaviour
         return count;
     }
 
-    private void OnValidate()
+    [ContextMenu("Regenerate")]
+    private void Regenerate()
     {
-        return;
         if (_prefab == null)
             return;
         for (int i = 0; i < _places.Count; i++)
@@ -155,6 +165,14 @@ public class PlacesGroup : MonoBehaviour
                     _places.Add(animalPlace);
                 }
             }
+        }
+    }
+
+    private void OnValidate()
+    {
+        foreach (var item in _places)
+        {
+            item.DrawCube = _debugCubes;
         }
     }
 }
