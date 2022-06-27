@@ -13,7 +13,7 @@ public class Economy : IService
 
     public Economy()
     {
-        _gold = new Money(100);
+        _gold = new Money(1000);
     }
 
     public void AddGold(int count)

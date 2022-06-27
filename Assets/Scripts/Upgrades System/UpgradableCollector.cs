@@ -10,6 +10,7 @@ public class UpgradableCollector : MonoBehaviour
     {
         public int Level;
         public Vector3 ColliderSize;
+        public GameObject Grab;
     }
     [SerializeField] private BoxCollider _collider;
 
@@ -17,11 +18,12 @@ public class UpgradableCollector : MonoBehaviour
 
     public void SetUpgrade(int level)
     {
+        if (level > 1)
+            _upgrades.Where(upgrade => upgrade.Level == level - 1).First().Grab.SetActive(false);
         _collider.size = _upgrades.Where(upgrade => upgrade.Level == level).First().ColliderSize;
+        _upgrades.Where(upgrade => upgrade.Level == level).First().Grab.SetActive(true);
     }
 
-    private void Awake()
-    {
+    private void Awake() =>
         _collider.size = _upgrades[0].ColliderSize;
-    }
 }

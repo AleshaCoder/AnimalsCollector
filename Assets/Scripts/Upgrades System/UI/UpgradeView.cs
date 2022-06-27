@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -13,10 +11,7 @@ public class UpgradeView : MonoBehaviour
 
     public Action OnClick;
 
-    public void RefreshPrice(int price)
-    {
-        _price.text = price.ToString();
-    }
+    public void RefreshPrice(int price) => _price.text = price.ToString();
 
     public void RefreshLevelAsLevel(int level)
     {
@@ -25,13 +20,7 @@ public class UpgradeView : MonoBehaviour
             _level.text = level.ToString();
     }
 
-    private void OnEnable()
-    {
-        _upButton.onClick.AddListener(OnClick.Invoke);
-    }
+    private void OnEnable() => _upButton.onClick.AddListener(() => OnClick?.Invoke());
 
-    private void OnDisable()
-    {
-        _upButton.onClick.RemoveListener(OnClick.Invoke);
-    }
+    private void OnDisable() => _upButton.onClick.RemoveAllListeners();
 }

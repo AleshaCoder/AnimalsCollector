@@ -115,11 +115,11 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineLightingType: 0
     - _OutlineLightingTypeURP: 0
-    - _OutlineMinWidth: 2
+    - _OutlineMinWidth: 0.59
     - _OutlinePixelSizeType: 2
     - _OutlineTextureLOD: 4.5
     - _OutlineTextureType: 0
-    - _OutlineWidth: 3
+    - _OutlineWidth: 3.27
     - _Parallax: 0.02
     - _RampBands: 4
     - _RampBandsSmoothing: 0.1

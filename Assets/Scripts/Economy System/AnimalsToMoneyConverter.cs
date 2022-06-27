@@ -6,6 +6,7 @@ using UnityEngine;
 public class AnimalsToMoneyConverter : MonoBehaviour
 {
     [SerializeField] private AnimalsCollector _animalCollector;
+    [SerializeField] private CoinsSpawner _coinsSpawner;
     private Economy _economy;
 
     private void OnEnable()
@@ -26,5 +27,6 @@ public class AnimalsToMoneyConverter : MonoBehaviour
     private void Convert(Animal animal)
     {
         _economy.AddGold(animal.Price);
+        _coinsSpawner.Spawn();
     }
 }

@@ -40,9 +40,11 @@ public class UpgradesValidator : MonoBehaviour
     private void Upgrade(UpgradeData data)
     {
         if (_economy.TrySpendGold(_upgradesPrices[data.Upgrade.Level]))
+        {
             data.Upgrade.Upgrade();
-        data.UpgradeView.RefreshLevelAsLevel(_speedUpgrade.Level);
-        data.UpgradeView.RefreshPrice(_upgradesPrices[_speedUpgrade.Level]);
+            data.UpgradeView.RefreshLevelAsLevel(data.Upgrade.Level);
+            data.UpgradeView.RefreshPrice(_upgradesPrices[data.Upgrade.Level]);
+        }
     }
 
     private void Start()
