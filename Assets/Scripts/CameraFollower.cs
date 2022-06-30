@@ -1,61 +1,14 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public sealed class CameraFollower : MonoBehaviour, IService
+public sealed partial class CameraFollower : MonoBehaviour, IService
 {
     [Header("Common Settings")]
     [SerializeField][Tooltip("ICameraPursued")]
     private MonoBehaviour _pursued;
 
-    [SerializeField]
-    private float _distanceToTarget = 15.0f;
-
-    [SerializeField]
-    private float _followSpeed = 3.0f;
-
-    [Space]
-    [Header("Rotation Settings")]
-    [SerializeField]
-    private float _cameraXRotation = 70;
-
-    [SerializeField]
-    private float _cameraYRotation = 0;
-
-    [SerializeField]
-    private float _cameraZRotation = 0;
-
-    [Space]
-    [Header("Spaces Settings")]
-    [SerializeField]
-    private float _cameraXSpace = 0;
-
-    [SerializeField]
-    private float _cameraYSpace = 0;
-
-    [SerializeField]
-    private float _cameraZSpace = 0;
-
-    [Space]
-    [Header("Axis Settings For Following")]
-    [SerializeField]
-    private bool _followX;
-
-    [SerializeField]
-    private bool _followY;
-
-    [SerializeField]
-    private bool _followZ;
-
-    [Space]
-    [Header("Follow or No in Game")]
-    [SerializeField] private bool _follow = false;
-
-    [Space]
-    [Header("Use Rotation or No in Game")]
-    [SerializeField] private bool _useRotation = false;
-
-    [Space]
-    [Header("Use Auto Distance or No in Game")]
-    [SerializeField] private bool _autoDistance = false;
+    [SerializeField] private CameraFollowerSettings _settings;
 
     private Vector3 _startPosition;
     private Quaternion _startRotation;
@@ -65,15 +18,11 @@ public sealed class CameraFollower : MonoBehaviour, IService
 
     public ICameraPursued Pursued
     {
-        get
-        {
-            return (ICameraPursued)_pursued;
-        }
-        set
-        {
-            _pursued = (MonoBehaviour)value;
-        }
+        get => (ICameraPursued)_pursued;
+        set => _pursued = (MonoBehaviour)value;
     }
+
+    public CameraFollowerSettings Settings => _settings;
 
     public Transform TargetTransform
     {
@@ -81,38 +30,35 @@ public sealed class CameraFollower : MonoBehaviour, IService
         {
             if (Pursued.TransformForFollowing == null)
             {
-                _follow = false;
+                _settings.Follow = false;
                 Debug.LogError("Target Transform Not Set In Inspector :: CameraFollower.cs at 71");
             }
             return Pursued.TransformForFollowing;
         }
     }
 
-    public Vector3 CameraAngle
-    {
-        get { return new Vector3(_cameraXRotation, _cameraYRotation, _cameraZRotation); }
-    }
+    public Vector3 CameraAngle => _settings.EulerAngle;
 
     public float DistanceToTarget
     {
-        get { return _distanceToTarget; }
-        set { _distanceToTarget = Mathf.Max(0.0f, value); }
+        get => _settings.DistanceToTarget;
+        set => _settings.DistanceToTarget = Mathf.Max(0.0f, value);
     }
 
     public float FollowSpeed
     {
-        get { return _followSpeed; }
-        set { _followSpeed = Mathf.Max(0.0f, value); }
+        get => _settings.FollowSpeed;
+        set => _settings.FollowSpeed = Mathf.Max(0.0f, value);
     }
 
-    private Vector3 _cameraRelativePosition
+    private Vector3 CameraRelativePosition
     {
         get
         {
             Vector3 relativePosition = TargetTransform.position - transform.forward * DistanceToTarget;
-            float x = (_followX == true) ? relativePosition.x + _cameraXSpace : transform.position.x;
-            float y = (_followY == true) ? relativePosition.y + _cameraYSpace : transform.position.y;
-            float z = (_followZ == true) ? relativePosition.z + _cameraZSpace : transform.position.z;
+            float x = _settings.FollowX ? relativePosition.x + _settings.Spaces.x : transform.position.x;
+            float y = _settings.FollowY ? relativePosition.y + _settings.Spaces.y : transform.position.y;
+            float z = _settings.FollowZ ? relativePosition.z + _settings.Spaces.z : transform.position.z;
             return new Vector3(x, y, z);
         }
     }
@@ -121,72 +67,83 @@ public sealed class CameraFollower : MonoBehaviour, IService
     {
         _startPosition = transform.position;
         _startRotation = transform.rotation;
-        _startFollowRotation = new Vector3(_cameraXRotation, _cameraYRotation, _cameraZRotation);
-        _startFollowSpaces = new Vector3(_cameraXSpace, _cameraYSpace, _cameraZSpace);
-        _startDistance = _distanceToTarget;
+        _startFollowRotation = _settings.EulerAngle;
+        _startFollowSpaces = _settings.Spaces;
+        _startDistance = DistanceToTarget;
     }
 
     public void MoveToStartPosition()
     {
         transform.position = _startPosition;
         transform.rotation = _startRotation;
-        _distanceToTarget = _startDistance;
-        _cameraXRotation = _startFollowRotation.x;
-        _cameraYRotation = _startFollowRotation.y;
-        _cameraZRotation = _startFollowRotation.z;
-        _cameraXSpace = _startFollowSpaces.x;
-        _cameraYSpace = _startFollowSpaces.y;
-        _cameraZSpace = _startFollowSpaces.z;
+        DistanceToTarget = _startDistance;
+        _settings.EulerAngle = _startFollowRotation;
+        _settings.Spaces = _startFollowSpaces;
+    }
+
+    public async Task ChangeSettings(CameraFollowerSettings newSettings)
+    {
+        _settings.Follow = false;
+        _settings.FollowSpeed = newSettings.FollowSpeed;
+        _settings.DistanceToTarget = newSettings.DistanceToTarget;
+        await Task.WhenAll(ChangeSpaces(newSettings.Spaces), ChangeRotation(newSettings.EulerAngle));
+        _settings = (CameraFollowerSettings)newSettings.Clone();
+    }
+
+    private async Task ChangeRotation(Vector3 eulerAngle)
+    {
+        while (Vector3.Distance(eulerAngle, _settings.EulerAngle) > 0.3f)
+        {
+            _settings.EulerAngle = Vector3.Lerp(_settings.EulerAngle, eulerAngle, FollowSpeed * Time.deltaTime);
+            transform.localEulerAngles = CameraAngle;
+            await Task.Delay(TimeSpan.FromSeconds(Time.deltaTime));
+        }
+        _settings.EulerAngle = eulerAngle;
+    }
+
+    private async Task ChangeSpaces(Vector3 spaces)
+    {
+        while (Vector3.Distance(spaces, _settings.Spaces) > 0.3f)
+        {
+            _settings.Spaces = Vector3.Lerp(_settings.Spaces, spaces, FollowSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, CameraRelativePosition, FollowSpeed * Time.deltaTime);
+            await Task.Delay(TimeSpan.FromSeconds(Time.deltaTime));
+        }
+        _settings.Spaces = spaces;
     }
 
     public void Follow(bool x = true, bool y = true, bool z = true, bool useRotation = true, float distance = -1)
     {
-        _followX = x;
-        _followY = y;
-        _followZ = z;
-        _useRotation = useRotation;
+        _settings.FollowX = x;
+        _settings.FollowY = y;
+        _settings.FollowZ = z;
+        _settings.UseRotation = useRotation;
+
         if (distance == -1)
         {
             Follow();
             return;
         }
-        _distanceToTarget = distance;
+
+        DistanceToTarget = distance;
         Follow();
-    }
-
-    public void SetRotation(float x, float y, float z)
-    {
-        _cameraXRotation = x;
-        _cameraYRotation = y;
-        _cameraZRotation = z;
-    }
-
-    public void SetSpaces(float x, float y, float z)
-    {
-        _cameraXSpace = x;
-        _cameraYSpace = y;
-        _cameraZSpace = z;
     }
 
     public void Follow()
     {
-        if (_autoDistance == true)
-        {
+        if (_settings.AutoDistance == true)
             DistanceToTarget = Vector3.Distance(transform.position, Pursued.TransformForFollowing.position);
-        }
-        transform.position = _cameraRelativePosition;
-        _follow = true;
+
+        transform.position = CameraRelativePosition;
+        _settings.Follow = true;
     }
 
-    public void StopFollowing()
-    {
-        _follow = false;
-    }
+    public void StopFollowing() => _settings.Follow = false;
 
     public void OnValidate()
     {
-        DistanceToTarget = _distanceToTarget;
-        FollowSpeed = _followSpeed;
+        DistanceToTarget = _settings.DistanceToTarget;
+        FollowSpeed = _settings.FollowSpeed;
 
         if (_pursued is ICameraPursued)
         {
@@ -201,12 +158,12 @@ public sealed class CameraFollower : MonoBehaviour, IService
 
     public void FixedUpdate()
     {
-        if (_follow == false)
+        if (_settings.Follow == false)
             return;
 
-        transform.position = Vector3.Lerp(transform.position, _cameraRelativePosition, FollowSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, CameraRelativePosition, FollowSpeed * Time.deltaTime);
 
-        if (_useRotation == false)
+        if (_settings.UseRotation == false)
             return;
 
         transform.localEulerAngles = CameraAngle;

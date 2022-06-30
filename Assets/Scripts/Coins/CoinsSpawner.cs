@@ -4,12 +4,13 @@ public class CoinsSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _coinPrefab;
     [SerializeField] private Transform _target;
+    [SerializeField] private Transform _parent;
 
     public void Spawn()
     {
-        Coin coin = Instantiate(_coinPrefab, transform);
-        coin.transform.localPosition = Vector3.zero;
-        coin.transform.LookAt(Camera.main.transform);
+        var screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+        Coin coin = Instantiate(_coinPrefab, _parent);
+        coin.transform.position = screenPoint;
         coin.MoveTo(_target);
     }
 }

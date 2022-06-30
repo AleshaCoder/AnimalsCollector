@@ -1,0 +1,12 @@
+Font: Roboto  Style: Bold
+Point Size: 689   SP/PD Ratio: 1,3%
+
+Characters included: 98/98
+Missing characters: 0
+Excluded characters: 0
+
+Characters missing from font file:
+----------------------------------------
+
+Characters excluded from packing:
+----------------------------------------

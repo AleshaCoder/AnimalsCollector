@@ -45,7 +45,8 @@ namespace ECM.Walkthrough.CustomInput
         public async Task Park(Vector3 position, Vector3 eulerAngles)
         {
             _parking = true;
-            var animMove = movement.transform.DOMove(new Vector3(position.x, movement.transform.position.y, position.z), 0.2f);
+            moveDirection = Vector3.zero;            
+            var animMove = movement.transform.DOLocalMove(new Vector3(position.x, movement.transform.localPosition.y, position.z), 0.2f);
             var animRotation = movement.transform.DORotate(new Vector3(0, -90, 0), 0.5f, RotateMode.Fast);
             animMove.Play();
             await animMove.AsyncWaitForCompletion();
