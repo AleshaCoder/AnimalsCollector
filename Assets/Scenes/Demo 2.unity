@@ -9374,9 +9374,9 @@ GameObject:
   - component: {fileID: 1046702557}
   - component: {fileID: 1046702552}
   - component: {fileID: 1046702553}
+  - component: {fileID: 1046702554}
   - component: {fileID: 1046702556}
   - component: {fileID: 1046702555}
-  - component: {fileID: 1046702554}
   - component: {fileID: 1046702558}
   - component: {fileID: 1046702559}
   m_Layer: 6
@@ -9572,23 +9572,23 @@ MonoBehaviour:
     _upgradeData:
       _upgrades:
       - Level: 1
-        Result: 5
+        Result: 10
       - Level: 2
-        Result: 7
-      - Level: 3
-        Result: 9
-      - Level: 4
         Result: 12
-      - Level: 5
+      - Level: 3
         Result: 15
-      - Level: 6
+      - Level: 4
         Result: 18
-      - Level: 7
+      - Level: 5
         Result: 21
+      - Level: 6
+        Result: 25
+      - Level: 7
+        Result: 32
       - Level: 8
-        Result: 24
-      - Level: 9
         Result: 36
+      - Level: 9
+        Result: 42
       - Level: 10
         Result: 48
   _grabUpgrade:
@@ -15460,6 +15460,70 @@ PrefabInstance:
       propertyPath: _upgrades.Array.data[9].Grab
       value: 
       objectReference: {fileID: 1078748549}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[1].ColliderSize.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[2].ColliderSize.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[3].ColliderSize.x
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[4].ColliderSize.x
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[4].ColliderSize.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[5].ColliderSize.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[5].ColliderSize.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[5].ColliderSize.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[6].ColliderSize.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[6].ColliderSize.z
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[7].ColliderSize.x
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[7].ColliderSize.z
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[8].ColliderSize.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[8].ColliderSize.z
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[9].ColliderSize.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440629103, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3, type: 3}
+      propertyPath: _upgrades.Array.data[9].ColliderSize.z
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1391092087908481100, guid: 1c79c43ade9b71a42bf27a8b5f86d2a3,
         type: 3}
       propertyPath: m_RootOrder
