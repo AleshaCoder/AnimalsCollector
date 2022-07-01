@@ -92,24 +92,22 @@ public sealed partial class CameraFollower : MonoBehaviour, IService
 
     private async Task ChangeRotation(Vector3 eulerAngle)
     {
-        while (Vector3.Distance(eulerAngle, _settings.EulerAngle) > 0.3f)
+        while (Vector3.Distance(eulerAngle, _settings.EulerAngle) > 0.1f)
         {
             _settings.EulerAngle = Vector3.Lerp(_settings.EulerAngle, eulerAngle, FollowSpeed * Time.deltaTime);
             transform.localEulerAngles = CameraAngle;
             await Task.Delay(TimeSpan.FromSeconds(Time.deltaTime));
         }
-        _settings.EulerAngle = eulerAngle;
     }
 
     private async Task ChangeSpaces(Vector3 spaces)
     {
-        while (Vector3.Distance(spaces, _settings.Spaces) > 0.3f)
+        while (Vector3.Distance(spaces, _settings.Spaces) > 0.1f)
         {
             _settings.Spaces = Vector3.Lerp(_settings.Spaces, spaces, FollowSpeed * Time.deltaTime);
             transform.position = Vector3.Lerp(transform.position, CameraRelativePosition, FollowSpeed * Time.deltaTime);
             await Task.Delay(TimeSpan.FromSeconds(Time.deltaTime));
         }
-        _settings.Spaces = spaces;
     }
 
     public void Follow(bool x = true, bool y = true, bool z = true, bool useRotation = true, float distance = -1)
