@@ -1474,7 +1474,7 @@ MonoBehaviour:
       - Level: 2
         Result: 33
       - Level: 3
-        Result: 35
+        Result: 37
       - Level: 4
         Result: 40
       - Level: 5
@@ -5315,6 +5315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pursued: {fileID: 1046702558}
   _settings:
+    Physical: 1
     DistanceToTarget: 120
     FollowSpeed: 6
     EulerAngle: {x: 48, y: -90, z: 0}
@@ -6275,8 +6276,9 @@ MonoBehaviour:
   _follower: {fileID: 945171872}
   _joystick: {fileID: 2078129545}
   _settings:
+    Physical: 0
     DistanceToTarget: 60
-    FollowSpeed: 4.5
+    FollowSpeed: 6
     EulerAngle: {x: 40, y: -30, z: 0}
     Spaces: {x: 0, y: 0, z: 0}
     FollowX: 1
@@ -9470,9 +9472,9 @@ RectTransform:
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.28452924}
-  m_AnchoredPosition: {x: 2.659668, y: 1.5786133}
-  m_SizeDelta: {x: 5.3171387, y: 3.1607056}
+  m_AnchorMax: {x: 1, y: 0.15736967}
+  m_AnchoredPosition: {x: 2.659668, y: 162.57861}
+  m_SizeDelta: {x: 5.3171387, y: 325.16064}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1578614538
 MonoBehaviour:

@@ -14,7 +14,7 @@ public class Economy : IService
 
     public Economy()
     {
-        int count = PlayerPrefs.GetInt(Gold, 100);
+        int count = PlayerPrefs.GetInt(Gold, 500);
         _gold = new Money(count);
         OnGoldChanged += (count) => Save();
     }

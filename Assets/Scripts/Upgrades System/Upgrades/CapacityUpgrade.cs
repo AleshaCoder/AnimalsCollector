@@ -1,4 +1,6 @@
 using UnityEngine;
+using DG.Tweening;
+using ECM.Walkthrough.CustomInput;
 
 [System.Serializable]
 public class CapacityUpgrade : IUpgradable
@@ -28,5 +30,11 @@ public class CapacityUpgrade : IUpgradable
         _placesGroup.FreePlaceCount = _upgradeData.GetResult(_level);
         PlayerPrefs.SetInt(LevleCapacity, _level);
         PlayerPrefs.Save();
+
+        var _characterController = Object.FindObjectOfType<MyCharacterController>();
+        float scale = _characterController.transform.localScale.x;
+        _characterController.transform.localScale = _characterController.transform.localScale * 0.8f;
+        var anim = _characterController.transform.DOScale(scale * 1.2f, 0.3f).Play();
+        anim.onComplete += () => _characterController.transform.DOScale(scale, 0.3f).Play();
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using ECM.Walkthrough.CustomInput;
+using DG.Tweening;
 
 [System.Serializable]
 public class SpeedUpgrade : IUpgradable
@@ -24,5 +25,10 @@ public class SpeedUpgrade : IUpgradable
         _characterController.speed = _upgradeData.GetResult(_level);
         PlayerPrefs.SetInt(LevelSpeed, _level);
         PlayerPrefs.Save();
+
+        float scale = _characterController.transform.localScale.x;
+        _characterController.transform.localScale = _characterController.transform.localScale * 0.8f;
+        var anim = _characterController.transform.DOScale(scale * 1.2f, 0.3f).Play();
+        anim.onComplete += () => _characterController.transform.DOScale(scale, 0.3f).Play();
     }
 }

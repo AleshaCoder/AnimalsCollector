@@ -5,7 +5,8 @@ using UnityEngine;
 public sealed partial class CameraFollower : MonoBehaviour, IService
 {
     [Header("Common Settings")]
-    [SerializeField][Tooltip("ICameraPursued")]
+    [SerializeField]
+    [Tooltip("ICameraPursued")]
     private MonoBehaviour _pursued;
 
     [SerializeField] private CameraFollowerSettings _settings;
@@ -156,6 +157,12 @@ public sealed partial class CameraFollower : MonoBehaviour, IService
 
     public void FixedUpdate()
     {
+        if (_settings.Physical)
+            Move();
+    }
+
+    private void Move()
+    {
         if (_settings.Follow == false)
             return;
 
@@ -165,5 +172,11 @@ public sealed partial class CameraFollower : MonoBehaviour, IService
             return;
 
         transform.localEulerAngles = CameraAngle;
+    }
+
+    public void Update()
+    {
+        if (_settings.Physical == false)
+            Move();
     }
 }

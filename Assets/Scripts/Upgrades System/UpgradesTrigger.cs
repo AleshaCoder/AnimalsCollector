@@ -24,6 +24,7 @@ public class UpgradesTrigger : MonoBehaviour
             await Task.WhenAll(movement.Park(_positionForParking, _rotationForParking),
                 _follower.ChangeSettings(_settings));
             _upgradePanel.gameObject.SetActive(true);
+            _follower.enabled = false;
             _upgradePanel.OnExit += Exit;
         }
     }
@@ -31,6 +32,8 @@ public class UpgradesTrigger : MonoBehaviour
     private async void Exit()
     {
         _upgradePanel.gameObject.SetActive(false);
+        _follower.enabled = true;
+        _joystick.gameObject.SetActive(true);
         await _follower.ChangeSettings(_oldSettings);
         _joystick.gameObject.SetActive(true);        
         _upgradePanel.OnExit -= Exit;

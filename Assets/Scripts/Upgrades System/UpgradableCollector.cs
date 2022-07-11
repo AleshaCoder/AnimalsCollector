@@ -26,10 +26,12 @@ public class UpgradableCollector : MonoBehaviour
         GameObject grab = levelUpgrade.Grab;
 
         _collider.size = levelUpgrade.ColliderSize;
+
         float scale = grab.transform.localScale.x;
-        grab.transform.localScale /= 1.3f;
+        grab.transform.localScale = grab.transform.localScale * 0.8f;
         grab.SetActive(true);
-        grab.transform.DOScale(scale, 0.7f).Play();
+        var anim = grab.transform.DOScale(scale * 1.2f, 0.3f).Play();
+        anim.onComplete += () => grab.transform.DOScale(scale, 0.3f).Play();
     }
 
     private void Awake() =>

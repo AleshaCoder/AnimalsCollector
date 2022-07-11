@@ -52,7 +52,6 @@ public class UpgradesValidator : MonoBehaviour, IService
 
     public void Init()
     {
-        Debug.Log("Init UpgradesValidator");
         _economy = Services.Container.Single<Economy>();
         _upgradeDatas = new List<UpgradeData>();
         _upgradeDatas.Add(new UpgradeData(_speedUpgrade, _speedUpgradeView));
