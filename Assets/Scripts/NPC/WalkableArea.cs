@@ -13,6 +13,8 @@ public class WalkableArea : MonoBehaviour
     private float[] _cumulativeSizes;
     private float _total = 0;
 
+    public static WalkableArea Instance { get; private set; }
+
     private struct Line
     {
         public Vector3 Start;
@@ -74,47 +76,6 @@ public class WalkableArea : MonoBehaviour
         return false;
     }
 
-    private float GetMaxDistanceBetweenCorners()
-    {
-        float maxDistance = 0;
-        float currentDistance = 0;
-        for (int i = 0; i < _corners.Count - 1; i++)
-        {
-            currentDistance = Vector3.Distance(_corners[i].position, _corners[i + 1].position);
-            maxDistance = currentDistance > maxDistance ? currentDistance : maxDistance;
-        }
-        currentDistance = Vector3.Distance(_corners[0].position, _corners[_corners.Count - 1].position);
-        maxDistance = currentDistance > maxDistance ? currentDistance : maxDistance;
-
-        return maxDistance;
-    }
-
-    private bool HasIntersection(Line line1, Line line2)
-    {
-        float A1 = (line1.Start.z - line1.End.z) / (line1.Start.x - line1.End.x);
-        float A2 = (line2.Start.z - line2.End.z) / (line2.Start.x - line2.End.x);
-        float b1 = line1.Start.z - A1 * line1.Start.x;
-        float b2 = line2.Start.z - A2 * line2.Start.x;
-
-        if (A1 == A2)
-        {
-            return false; //отрезки параллельны
-        }
-
-        //Xa - абсцисса точки пересечения двух прямых
-        float Xa = (b2 - b1) / (A1 - A2);
-
-        if ((Xa < Mathf.Max(line1.Start.x, line2.Start.x)) || (Xa > Mathf.Min(line1.End.x, line2.End.x)))
-        {
-            return false; //точка Xa находится вне пересечения проекций отрезков на ось X 
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-
     private bool IsinsideTriangle(Vector3 point, Vector3 a, Vector3 b, Vector3 c)
     {
         Vector3 pa = a - point;
@@ -168,30 +129,28 @@ public class WalkableArea : MonoBehaviour
         return pointOnArea;
     }
 
-    private void Awake()
+    private void OnEnable()
     {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
+        Instance = this;
         CalcAreas();
     }
+
+    private void OnDisable() => Instance = null;
 
     private void OnDrawGizmos()
     {
         if (_corners.Count < 2)
             return;
+
         Gizmos.color = Color.red;
 
         for (int i = 0; i < _corners.Count - 1; i++)
-        {
             Gizmos.DrawLine(_corners[i].position, _corners[i + 1].position);
-        }
-
-        //Gizmos.DrawLine(_corners[0].position, _corners[_corners.Count - 1].position);
 
         if (Application.isPlaying)
         {
             Gizmos.color = Color.green;
-            
+
             for (int i = 0; i < _triangles.Length / 3; i++)
             {
                 Vector3 a = _vertices[_triangles[i * 3]];

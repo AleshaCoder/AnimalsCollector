@@ -5,5 +5,7 @@ using UnityEngine;
 public interface IUpgradable
 {
     public int Level { get; }
+
+    void Init();
     public void Upgrade();
 }

@@ -21,7 +21,7 @@ public class UpgradesTrigger : MonoBehaviour
                 return;
             _joystick.gameObject.SetActive(false);
             _oldSettings = (CameraFollower.CameraFollowerSettings)_follower.Settings.Clone();
-            await Task.WhenAny(movement.Park(_positionForParking, _rotationForParking),
+            await Task.WhenAll(movement.Park(_positionForParking, _rotationForParking),
                 _follower.ChangeSettings(_settings));
             _upgradePanel.gameObject.SetActive(true);
             _upgradePanel.OnExit += Exit;

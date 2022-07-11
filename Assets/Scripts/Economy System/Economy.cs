@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Economy : IService
 {
+    private const string Gold = "gold";
     private Money _gold;
 
     public int GoldCount => _gold.Count;
@@ -13,7 +14,14 @@ public class Economy : IService
 
     public Economy()
     {
-        _gold = new Money(1000);
+        int count = PlayerPrefs.GetInt(Gold, 100);
+        _gold = new Money(count);
+        OnGoldChanged += (count) => Save();
+    }
+
+    ~Economy()
+    {
+        OnGoldChanged = null;
     }
 
     public void AddGold(int count)
@@ -27,5 +35,11 @@ public class Economy : IService
         var can = _gold.TryGetMoney(count);
         OnGoldChanged?.Invoke(_gold.Count);
         return can;
+    }
+
+    private void Save()
+    {
+        PlayerPrefs.SetInt(Gold, _gold.Count);
+        PlayerPrefs.Save();
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 public class LoadGameState : IPayloadedState<string>
 {
@@ -25,6 +26,9 @@ public class LoadGameState : IPayloadedState<string>
     private void OnLoaded()
     {
         Debug.Log("Scene has loaded");
+        Services.Container.Single<LevelsPool>().Init();
+        Services.Container.Single<LevelLoader>().LoadCurrentLevel();
+        Services.Container.Single<UpgradesValidator>().Init();
         _stateMachine.Enter<GameLoopState>();        
     }
 }
@@ -33,6 +37,7 @@ public class LoadLevelState : IState
 {
     private readonly GameStateMachine _stateMachine;
     private readonly LoadingCurtain _loadingCurtain;
+    private LevelLoader _levelLoader;
 
     public LoadLevelState(GameStateMachine gameStateMachine, LoadingCurtain loadingCurtain)
     {
@@ -40,9 +45,10 @@ public class LoadLevelState : IState
         _loadingCurtain = loadingCurtain;
     }
 
-    public void Enter()
+    public async void Enter()
     {
-        _loadingCurtain.Show();
+        _levelLoader = Services.Container.Single<LevelLoader>();        
+        await _levelLoader.LoadNextLevel();
         _stateMachine.Enter<GameLoopState>();        
     }
 

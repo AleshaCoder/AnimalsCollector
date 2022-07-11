@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelsPool : MonoBehaviour
+public class LevelsPool : MonoBehaviour, IService
 {
     [SerializeField] private List<Level> _levels;
     private Level _currentLevel;

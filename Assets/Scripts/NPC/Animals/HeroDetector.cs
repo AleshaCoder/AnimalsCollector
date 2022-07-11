@@ -1,14 +1,15 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class HeroDetector : MonoBehaviour
 {
     private const float MsInSec = 0.001f;
-    [SerializeField] private Transform _hero;
+    private Transform _hero;
     [SerializeField] private float _detectionDistance;
     [SerializeField] private float _lossDistance;
-    [Tooltip("ms")][SerializeField] private float _updateTime;
+    [Tooltip("ms")] [SerializeField] private float _updateTime;
     [SerializeField] private bool _active;
 
     [Header("Editor Settings")]
@@ -21,8 +22,13 @@ public class HeroDetector : MonoBehaviour
     public Action OnDetection;
     public Action OnLoss;
 
-    public void SwitchOn()
+    public async void SwitchOn()
     {
+        while (Services.Container.Single<Hero>() == null)
+        {
+            await Task.Delay(20);
+        }
+        _hero = Services.Container.Single<Hero>().transform;
         _active = true;
         StartCoroutine(CheckDetection());
     }
@@ -48,7 +54,7 @@ public class HeroDetector : MonoBehaviour
             {
                 _detected = true;
                 OnDetection?.Invoke();
-            }            
+            }
             if (_detected == true && _lossDistance <= _currentDistance)
             {
                 _detected = false;
@@ -59,25 +65,34 @@ public class HeroDetector : MonoBehaviour
         }
     }
 
-    private void OnValidate()
+    //private void OnValidate()
+    //{
+    //    _updateTime = _updateTime <= 0 ? -_updateTime + 1 : _updateTime;
+
+    //    if (_hero == null)
+    //    {
+    //        _hero = FindObjectOfType<Hero>().transform;
+    //    }
+
+    //    if (_hero.TryGetComponent(out Hero hero) == false)
+    //    {
+    //        _hero = null;
+    //        Debug.LogError("Transform _hero should has type Hero");
+    //    }
+
+    //    if (_lossDistance < _detectionDistance)
+    //    {
+    //        Debug.LogWarning("LossDistance should be more than DetectionDistance");
+    //    }
+    //}
+
+    private async void Start()
     {
-        _updateTime = _updateTime <= 0 ? -_updateTime + 1 : _updateTime;      
-
-        if (_hero == null)
+        while (Services.Container.Single<Hero>() == null)
         {
-            _hero = FindObjectOfType<Hero>().transform;
+            await Task.Delay(20);
         }
-
-        if (_hero.TryGetComponent(out Hero hero) == false)
-        {
-            _hero = null;
-            Debug.LogError("Transform _hero should has type Hero");
-        }
-
-        if (_lossDistance < _detectionDistance)
-        {
-            Debug.LogWarning("LossDistance should be more than DetectionDistance");
-        }
+        _hero = Services.Container.Single<Hero>().transform;
     }
 
     private void OnDrawGizmos()

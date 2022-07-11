@@ -11,7 +11,7 @@ public class BootstrapState : IState
         Economy economy = new Economy();
         _stateMachine = stateMachine;
         _sceneLoader = sceneLoader;
-        Services.Container.RegisterSingle<Economy>(economy);
+        Services.Container.RegisterSingle(economy);
     }
 
     public void Enter()

@@ -17,3 +17,8 @@ public abstract class State : MonoBehaviour
         Finished = true;
     }
 }
+
+public abstract class StateWithAnimator : State
+{
+    public abstract void Init(Animator animator);
+}

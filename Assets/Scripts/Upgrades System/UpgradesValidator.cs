@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class UpgradesValidator : MonoBehaviour
+public class UpgradesValidator : MonoBehaviour, IService
 {
     private class UpgradeData
     {
@@ -32,8 +33,10 @@ public class UpgradesValidator : MonoBehaviour
     {
         foreach (var item in _upgradeDatas)
         {
-            Upgrade(item);
+            item.Upgrade.Init();
             item.UpgradeView.OnClick = () => Upgrade(item);
+            item.UpgradeView.RefreshLevelAsLevel(item.Upgrade.Level);
+            item.UpgradeView.RefreshPrice(_upgradesPrices[item.Upgrade.Level]);
         }
     }
 
@@ -47,8 +50,9 @@ public class UpgradesValidator : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Init()
     {
+        Debug.Log("Init UpgradesValidator");
         _economy = Services.Container.Single<Economy>();
         _upgradeDatas = new List<UpgradeData>();
         _upgradeDatas.Add(new UpgradeData(_speedUpgrade, _speedUpgradeView));

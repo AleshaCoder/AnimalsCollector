@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CombineCollector : MonoBehaviour
+public class CombineCollector : MonoBehaviour, IService
 {
     [SerializeField] private Transform _collectionPoint; // EndPoint Transform for pickable subjects
     [SerializeField] private Transform _enterCombinePoint;
@@ -12,11 +12,13 @@ public class CombineCollector : MonoBehaviour
     [SerializeField] private GameObject _cellPrefab;
 
     public Action<IPickable> OnPick;
+    public Action OnCollect;
 
     private async void Pick(IPickable pickable)
     {
         if (_placesGroup.TryTakeFreePlace(out Place animalPlace))
-        {            
+        {
+            OnCollect?.Invoke();
             Transform pickableTransform = ((MonoBehaviour)pickable).transform;
             pickableTransform.position = _collectionPoint.position;
             pickableTransform.parent = transform;
@@ -49,7 +51,7 @@ public class CombineCollector : MonoBehaviour
         float duration = 0.7f;
 
         var prefab = Instantiate(_cellPrefab, pickableTransform);
-        prefab.transform.localScale = new Vector3(100, 100, 6);
+        prefab.transform.localScale = new Vector3(110, 110, 6);
         prefab.transform.localPosition = new Vector3(0, 0.2f, 0);
         prefab.transform.localEulerAngles = new Vector3(90, 0, 0);
         pickableTransform.parent = place.transform;

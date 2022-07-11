@@ -11,9 +11,6 @@ public class FreePlacesView : MonoBehaviour
         _slider.Fillness = _placesGroup.GetTakenPlacesCount();
     }
 
-    private void Start() =>
-        Refresh();
-
     private void OnEnable() =>
         _placesGroup.OnFreePlacesCountChanged += Refresh;
 

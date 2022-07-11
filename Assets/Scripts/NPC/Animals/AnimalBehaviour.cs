@@ -17,6 +17,7 @@ public class AnimalBehaviour : MonoBehaviour
     [SerializeField] private IdleState _idleState;
     [Space] [SerializeField] private HeroDetector _heroDetector;
     [SerializeField] private MonoBehaviour _pickable;
+    [SerializeField] private Animator _animator;
 
     private Dictionary<Type, State> _states;
     private State _activeState;
@@ -36,6 +37,10 @@ public class AnimalBehaviour : MonoBehaviour
             [typeof(RunAwayState)] = _runAwayState,
             [typeof(IdleState)] = _idleState
         };
+
+        foreach (var item in _states)
+            if (item.Value is StateWithAnimator)
+                ((StateWithAnimator)item.Value).Init(_animator);
     }
 
     public void Enter<TState>(Exit onExit = null) where TState : State
@@ -70,6 +75,7 @@ public class AnimalBehaviour : MonoBehaviour
 
         _currentBehaviour = Behaviour.Idle;
     }
+
     private void StartPanicState()
     {
         StartRunning();
@@ -91,6 +97,14 @@ public class AnimalBehaviour : MonoBehaviour
         };
         _heroDetector.OnLoss += StartUsualState;
         _heroDetector.OnDetection += StartPanicState;
+        Services.Container.Single<LevelLoader>().OnStartLevelChanged += SwitchOff;
+        Services.Container.Single<LevelLoader>().OnLevelChanged += Init;
+    }
+
+    private void SwitchOff()
+    {
+        Enter<IdleState>();
+        enabled = false;
     }
 
     private void OnDisable()
@@ -103,12 +117,14 @@ public class AnimalBehaviour : MonoBehaviour
         _heroDetector.OnLoss -= StartUsualState;
         _heroDetector.OnDetection -= StartPanicState;
         _heroDetector.SwitchOff();
+        Services.Container.Single<LevelLoader>().OnStartLevelChanged -= SwitchOff;
+        Services.Container.Single<LevelLoader>().OnLevelChanged -= Init;
     }
 
-    private void Start()
-    {
-        _heroDetector.SwitchOn();
+    private void Init(Level level)
+    {        
         StartUsualState();
+        _heroDetector.SwitchOn();
     }
 
     private void OnValidate()

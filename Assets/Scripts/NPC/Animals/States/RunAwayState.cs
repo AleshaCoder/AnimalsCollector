@@ -2,21 +2,42 @@ using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
-public class RunAwayState : State
+public class RunAwayState : StateWithAnimator
 {
-    [SerializeField] private Transform _dangerousTransform;
-    [SerializeField] private WalkableArea _walkableArea;
     [SerializeField] private float _speed;
 
     private Tweener _tweener;
+    private Animator _animator;
+    private Transform _dangerousTransform;
+    private WalkableArea _walkableArea;
     private IEnumerator _runCoroutine;
     private Vector3 _lastTargetPosition;
 
     public override void Enter()
     {
         base.Enter();
+        _dangerousTransform = Services.Container.Single<CombineCollector>().transform;
+        _walkableArea = WalkableArea.Instance;
         _runCoroutine = Run();
         StartCoroutine(_runCoroutine);
+        switch (Random.Range(0,10))
+        {
+            case 0:
+                _animator.Play(AnimatorChick.States.Run);
+                break;
+            case 1:
+                _animator.Play(AnimatorChick.States.Fly);
+                break;
+            case 2:
+                _animator.Play(AnimatorChick.States.Roll);
+                break;
+            case 3:
+                _animator.Play(AnimatorChick.States.Bounce);
+                break;
+            default:
+                _animator.Play(AnimatorChick.States.Run);
+                break;
+        }
     }
 
     public override void Exit()
@@ -73,4 +94,6 @@ public class RunAwayState : State
 
     private float GetTime() =>
         GetDistance() / _speed;
+
+    public override void Init(Animator animator) => _animator = animator;
 }

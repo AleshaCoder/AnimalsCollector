@@ -2,21 +2,24 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FreeWalkingState : State
+public class FreeWalkingState : StateWithAnimator
 {
     [SerializeField] private Transform _walkingTransform;
-    [SerializeField] private WalkableArea _walkableArea;
     [Tooltip("Units per second")]
     [SerializeField] private float _speed;
 
     private Tween _mainTween;
+    private Animator _animator;
+    private WalkableArea _walkableArea;
     private List<Vector3> _pathPoints = new List<Vector3>();
 
     public override void Enter()
     {
         base.Enter();
+        _walkableArea = WalkableArea.Instance;
         CreateNewPathPoints();
         StartMovement();
+        _animator.Play(AnimatorChick.States.Walk);
     }
 
     public override void Exit()
@@ -62,6 +65,11 @@ public class FreeWalkingState : State
 
     private void Update()
     {
-        _walkableArea.HasPointInArea(transform.position);
+        if (_walkableArea == null)
+            _walkableArea = WalkableArea.Instance;
+        else
+            _walkableArea.HasPointInArea(transform.position);
     }
+
+    public override void Init(Animator animator) => _animator = animator;
 }
