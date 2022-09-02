@@ -24,18 +24,18 @@
 </p>
 
 <p align="center">
-      <a href="https://www.youtube.com/watch?v=I8ABuGPSu5M&list=PLEufvMTACQWYA_AQpYu5LTODHGaBrY9OL"><img src="https://i.ibb.co/0Zf7Twx/image.png" alt="image" border="0"></a>
+      <a href="https://www.youtube.com/watch?v=I8ABuGPSu5M&list=PLEufvMTACQWYA_AQpYu5LTODHGaBrY9OL"><img src="https://i.ibb.co/0Zf7Twx/image.png" alt="YouTube" border="10"></a>
       <br>
       <a href="https://www.youtube.com/watch?v=I8ABuGPSu5M&list=PLEufvMTACQWYA_AQpYu5LTODHGaBrY9OL">
-          <img src="https://img.shields.io/badge/YouTube-Watch_gameplay-red?style=for-the-badge&logo=youtube&logoColor=red" alt="PlayMarket">
+          <img src="https://img.shields.io/badge/YouTube-Watch_gameplay-red?style=for-the-badge&logo=youtube&logoColor=red" alt="YouTube">
       </a><br>
-</p>
+</p><br><br>
 
 <p align="center">
-    <img src="https://play-lh.googleusercontent.com/lzTX6kto6muqGuXYdn6NLXm4xdLgu0IlFSnVLH-zfyvjtSklBYfaqxvGygAknijl6Q=w2560-h1440-rw" width = "240">
-    <img src="https://play-lh.googleusercontent.com/JEpW7RG5A4XIxPsR6gG1lV9aCkFHkwZAqAVaLuzFbNGcmSQJDNGCWhKR-LKdzLBj8Q=w2560-h1440-rw" width = "240">
-    <img src="https://play-lh.googleusercontent.com/Y5WTDZ7emy5glv3YB3Wrw9G9j-pl_5YTKjbUmSjS64DriNvWdEArra70npM9RmqxcFQ=w2560-h1440-rw" width = "240">
-    <img src="https://play-lh.googleusercontent.com/qs4aIAM9vQHScnpMZnVK-pOdVe5H1FgcsXM-cm6_Q1YnvQTOn7ZLeeklkhlxGVhaY43l=w2560-h1440-rw" width = "240">
+    <img src="https://play-lh.googleusercontent.com/lzTX6kto6muqGuXYdn6NLXm4xdLgu0IlFSnVLH-zfyvjtSklBYfaqxvGygAknijl6Q=w2560-h1440-rw" width = "20%">
+    <img src="https://play-lh.googleusercontent.com/JEpW7RG5A4XIxPsR6gG1lV9aCkFHkwZAqAVaLuzFbNGcmSQJDNGCWhKR-LKdzLBj8Q=w2560-h1440-rw" width = "20%">
+    <img src="https://play-lh.googleusercontent.com/Y5WTDZ7emy5glv3YB3Wrw9G9j-pl_5YTKjbUmSjS64DriNvWdEArra70npM9RmqxcFQ=w2560-h1440-rw" width = "20%">
+    <img src="https://play-lh.googleusercontent.com/qs4aIAM9vQHScnpMZnVK-pOdVe5H1FgcsXM-cm6_Q1YnvQTOn7ZLeeklkhlxGVhaY43l=w2560-h1440-rw" width = "20%">
 </p>
 
 ## Developers
